@@ -117,7 +117,7 @@ def index(request):
 
     # Set language
     translation.activate(preferences['language'])
-    request.session[translation.LANGUAGE_SESSION_KEY] = preferences['language']
+    request.session['_language'] = preferences['language']
 
     # Filter news based on user preferences
     filtered_news = []
