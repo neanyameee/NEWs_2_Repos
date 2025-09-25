@@ -1,0 +1,115 @@
+{% extends 'newsapp/base.html' %}  <!-- Изменен путь -->
+{% load i18n %}
+
+{% block title %}{% trans "Настройки новостей" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="preferences-header">
+        <h2>{% trans "Настройки персонализированных новостей" %}</h2>
+        <p>{% trans "Настройте параметры отображения новостей по вашему вкусу" %}</p>
+    </div>
+
+    <form method="post" class="preferences-form">
+        {% csrf_token %}
+
+        <div class="form-section">
+            <h3>{% trans "Категории новостей" %}</h3>
+            <div class="categories-grid">
+                {% for choice in form.categories %}
+                <label class="category-checkbox">
+                    {{ choice.tag }}
+                    <span class="checkmark"></span>
+                    {{ choice.choice_label }}
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>{% trans "Тема оформления" %}</h3>
+            <div class="theme-options">
+                {% for choice in form.theme %}
+                <label class="theme-option">
+                    {{ choice.tag }}
+                    <div class="theme-preview {{ choice.choice_value }}-preview">
+                        <span class="theme-name">
+                            {% if choice.choice_value == 'light' %}
+                                {% trans "Светлая" %}
+                            {% else %}
+                                {% trans "Темная" %}
+                            {% endif %}
+                        </span>
+                    </div>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>{% trans "Язык интерфейса" %}</h3>
+            <div class="language-options">
+                {% for choice in form.language %}
+                <label class="language-option">
+                    {{ choice.tag }}
+                    <span class="language-name">
+                        {% if choice.choice_value == 'ru' %}
+                            🇷🇺 {% trans "Русский" %}
+                        {% else %}
+                            🇺🇸 English
+                        {% endif %}
+                    </span>
+                </label>
+                {% endfor %}
+            </div>
+        </div>
+
+        <div class="form-section">
+            <h3>{% trans "Дополнительные настройки" %}</h3>
+            <div class="additional-settings">
+                <label class="checkbox-setting">
+                    {{ form.email_notifications }}
+                    <span class="setting-label">{% trans "Email уведомления о новых новостях" %}</span>
+                </label>
+
+                <div class="number-setting">
+                    <label for="{{ form.news_per_page.id_for_label }}">
+                        {% trans "Количество новостей на странице" %}:
+                    </label>
+                    {{ form.news_per_page }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">{% trans "Сохранить настройки" %}</button>
+            <a href="{% url 'index' %}" class="btn-secondary">{% trans "Отмена" %}</a>
+        </div>
+    </form>
+
+    <div class="current-preferences">
+        <h3>{% trans "Текущие настройки" %}</h3>
+        <div class="preferences-summary">
+            <p><strong>{% trans "Категории" %}:</strong> {{ preferences.categories|join:", " }}</p>
+            <p><strong>{% trans "Тема" %}:</strong>
+                {% if preferences.theme == 'light' %}
+                    {% trans "Светлая" %}
+                {% else %}
+                    {% trans "Темная" %}
+                {% endif %}
+            </p>
+            <p><strong>{% trans "Язык" %}:</strong>
+                {% if preferences.language == 'ru' %}
+                    {% trans "Русский" %}
+                {% else %}
+                    English
+                {% endif %}
+            </p>
+            <p><strong>{% trans "Email уведомления" %}:</strong>
+                {{ preferences.email_notifications|yesno:_("Включены,Выключены") }}
+            </p>
+            <p><strong>{% trans "Новостей на странице" %}:</strong> {{ preferences.news_per_page }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

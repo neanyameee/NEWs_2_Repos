@@ -1,0 +1,52 @@
+{% extends 'newsapp/base.html' %}  <!-- Изменен путь -->
+{% load i18n %}
+
+{% block title %}{% trans "Главная - Новости" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="news-header">
+        <h2>{% trans "Ваши персонализированные новости" %}</h2>
+        <p>{% trans "Подобранные специально для вас на основе ваших предпочтений" %}</p>
+    </div>
+
+    <div class="news-grid">
+        {% for item in news %}
+        <article class="news-card">
+            <div class="news-image">
+                <img src="{% static 'newsapp/images/news' %}{{ forloop.counter|add:'1' }}.jpg"  <!-- Изменен путь -->
+                     alt="{{ item.title }}"
+                     onerror="this.style.display='none'">
+            </div>
+            <div class="news-content">
+                <h3>{{ item.title }}</h3>
+                <p class="news-date">{{ item.date }}</p>
+                <p class="news-text">{{ item.content }}</p>
+                <button class="read-more">{% trans "Читать далее" %}</button>
+            </div>
+        </article>
+        {% empty %}
+        <div class="no-news">
+            <h3>{% trans "Новости не найдены" %}</h3>
+            <p>{% trans "Попробуйте изменить настройки категорий в" %}
+               <a href="{% url 'preferences' %}">{% trans "настройках" %}</a>.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+    <div class="stats">
+        <div class="stat-card">
+            <h4>{% trans "Всего новостей" %}</h4>
+            <p class="stat-number">{{ news|length }}</p>
+        </div>
+        <div class="stat-card">
+            <h4>{% trans "Выбранные категории" %}</h4>
+            <p class="stat-number">{{ preferences.categories|length }}</p>
+        </div>
+        <div class="stat-card">
+            <h4>{% trans "Новостей на странице" %}</h4>
+            <p class="stat-number">{{ preferences.news_per_page }}</p>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,67 @@
+{% load i18n static %}
+<!DOCTYPE html>
+<html lang="{{ preferences.language }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% trans "Персонализированные новости" %}{% endblock %}</title>
+
+    {% if preferences.theme == 'dark' %}
+    <link rel="stylesheet" href="{% static 'newsapp/css/dark-theme.css' %}">  <!-- Изменен путь -->
+    {% else %}
+    <link rel="stylesheet" href="{% static 'newsapp/css/style.css' %}">  <!-- Изменен путь -->
+    {% endif %}
+</head>
+<body class="{{ preferences.theme }}-theme">
+    <header>
+        <nav>
+            <div class="nav-brand">
+                <h1>{% trans "Новости" %}</h1>
+            </div>
+            <div class="nav-links">
+                <a href="{% url 'index' %}">{% trans "Главная" %}</a>
+                <a href="{% url 'preferences' %}">{% trans "Настройки" %}</a>
+
+                <!-- Theme switcher -->
+                <div class="theme-switcher">
+                    {% if preferences.theme == 'light' %}
+                    <a href="{% url 'set_theme' 'dark' %}">🌙 {% trans "Темная" %}</a>
+                    {% else %}
+                    <a href="{% url 'set_theme' 'light' %}">☀️ {% trans "Светлая" %}</a>
+                    {% endif %}
+                </div>
+
+                <!-- Language switcher -->
+                <div class="language-switcher">
+                    {% if preferences.language == 'ru' %}
+                    <a href="{% url 'set_language' 'en' %}">🇺🇸 English</a>
+                    {% else %}
+                    <a href="{% url 'set_language' 'ru' %}">🇷🇺 Русский</a>
+                    {% endif %}
+                </div>
+            </div>
+        </nav>
+    </header>
+
+    <main>
+        <!-- Visit History -->
+        <aside class="visit-history">
+            <h3>{% trans "История посещений" %}</h3>
+            <ul>
+                {% for visit in visit_history %}
+                <li>{{ visit.page }} - {{ visit.timestamp|slice:":16" }}</li>
+                {% empty %}
+                <li>{% trans "История пуста" %}</li>
+                {% endfor %}
+            </ul>
+        </aside>
+
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2025 {% trans "Персонализированные новости" %}. {% trans "Все права защищены" %}.</p>
+    </footer>
+</body>
+</html>
