@@ -1,0 +1,18 @@
+:root {
+    --primary-color: #3b82f6;
+    --secondary-color: #94a3b8;
+    --background-color: #0f172a;
+    --surface-color: #1e293b;
+    --text-primary: #f1f5f9;
+    --text-secondary: #cbd5e1;
+    --border-color: #334155;
+}
+
+body {
+    background-color: var(--background-color);
+    color: var(--text-primary);
+}
+
+.news-image {
+    background: #334155;
+}

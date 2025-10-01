@@ -1,0 +1,55 @@
+{% extends 'newsapp/base.html' %}
+{% load i18n %}
+{% load static %}
+
+{% block title %}{% trans "Настройки новостей" %}{% endblock %}
+
+{% block content %}
+<div class="container">
+    <div class="preferences-header">
+        <h2>{% trans "Настройки персонализированных новостей" %}</h2>
+        <p>{% trans "Настройте параметры отображения новостей по вашему вкусу" %}</p>
+    </div>
+
+    <form method="post" class="preferences-form">
+        {% csrf_token %}
+
+        <div class="form-section">
+            <h3>{% trans "Категории новостей" %}</h3>
+            {{ form.categories }}
+        </div>
+
+        <div class="form-section">
+            <h3>{% trans "Тема оформления" %}</h3>
+            {{ form.theme }}
+        </div>
+
+        <div class="form-section">
+            <h3>{% trans "Язык интерфейса" %}</h3>
+            {{ form.language }}
+        </div>
+
+        <div class="form-section">
+            <h3>{% trans "Дополнительные настройки" %}</h3>
+            <div class="additional-settings">
+                <label>
+                    {{ form.email_notifications }}
+                    {% trans "Email уведомления о новых новостях" %}
+                </label>
+
+                <div class="number-setting">
+                    <label for="{{ form.news_per_page.id_for_label }}">
+                        {% trans "Количество новостей на странице" %}:
+                    </label>
+                    {{ form.news_per_page }}
+                </div>
+            </div>
+        </div>
+
+        <div class="form-actions">
+            <button type="submit" class="btn-primary">{% trans "Сохранить настройки" %}</button>
+            <a href="{% url 'index' %}" class="btn-secondary">{% trans "Отмена" %}</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

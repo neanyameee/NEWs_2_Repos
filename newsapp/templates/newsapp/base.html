@@ -1,6 +1,6 @@
-{% load i18n static %}
-{% load static %}
 <!DOCTYPE html>
+{% load i18n %}
+{% load static %}
 <html lang="{{ preferences.language }}">
 <head>
     <meta charset="UTF-8">
@@ -8,9 +8,9 @@
     <title>{% block title %}{% trans "Персонализированные новости" %}{% endblock %}</title>
 
     {% if preferences.theme == 'dark' %}
-    <link rel="stylesheet" href="{% static 'newsapp/css/dark-theme.css' %}">  <!-- Изменен путь -->
+    <link rel="stylesheet" href="{% static 'newsapp/css/dark-theme.css' %}">
     {% else %}
-    <link rel="stylesheet" href="{% static 'newsapp/css/style.css' %}">  <!-- Изменен путь -->
+    <link rel="stylesheet" href="{% static 'newsapp/css/style.css' %}">
     {% endif %}
 </head>
 <body class="{{ preferences.theme }}-theme">
@@ -23,7 +23,6 @@
                 <a href="{% url 'index' %}">{% trans "Главная" %}</a>
                 <a href="{% url 'preferences' %}">{% trans "Настройки" %}</a>
 
-                <!-- Theme switcher -->
                 <div class="theme-switcher">
                     {% if preferences.theme == 'light' %}
                     <a href="{% url 'set_theme' 'dark' %}">🌙 {% trans "Темная" %}</a>
@@ -32,12 +31,11 @@
                     {% endif %}
                 </div>
 
-                <!-- Language switcher -->
                 <div class="language-switcher">
                     {% if preferences.language == 'ru' %}
-                    <a href="{% url 'set_language' 'en' %}">🇺🇸 English</a>
+                    <a href="{% url 'set_language' 'en' %}">English</a>
                     {% else %}
-                    <a href="{% url 'set_language' 'ru' %}">🇷🇺 Русский</a>
+                    <a href="{% url 'set_language' 'ru' %}">Русский</a>
                     {% endif %}
                 </div>
             </div>
@@ -45,20 +43,19 @@
     </header>
 
     <main>
-        <!-- Visit History -->
         <aside class="visit-history">
             <h3>{% trans "История посещений" %}</h3>
             <ul>
                 {% for visit in visit_history %}
                 <li>{{ visit.page }} - {{ visit.timestamp|slice:":16" }}</li>
-                {% empty %}
-                <li>{% trans "История пуста" %}</li>
                 {% endfor %}
             </ul>
         </aside>
 
-        {% block content %}
-        {% endblock %}
+        <div class="content">
+            {% block content %}
+            {% endblock %}
+        </div>
     </main>
 
     <footer>

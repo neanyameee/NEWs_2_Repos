@@ -1,5 +1,6 @@
 {% extends 'newsapp/base.html' %}
 {% load i18n %}
+{% load static %}
 
 {% block title %}{% trans "Главная - Новости" %}{% endblock %}
 
@@ -14,9 +15,7 @@
         {% for item in news %}
         <article class="news-card">
             <div class="news-image">
-                <img src="{% static 'newsapp/images/news' %}{{ forloop.counter|add:'1' }}.jpg"  <!-- Изменен путь -->
-                     alt="{{ item.title }}"
-                     onerror="this.style.display='none'">
+                <div class="image-placeholder">📰</div>
             </div>
             <div class="news-content">
                 <h3>{{ item.title }}</h3>
@@ -42,10 +41,6 @@
         <div class="stat-card">
             <h4>{% trans "Выбранные категории" %}</h4>
             <p class="stat-number">{{ preferences.categories|length }}</p>
-        </div>
-        <div class="stat-card">
-            <h4>{% trans "Новостей на странице" %}</h4>
-            <p class="stat-number">{{ preferences.news_per_page }}</p>
         </div>
     </div>
 </div>
